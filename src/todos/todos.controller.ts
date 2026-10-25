@@ -21,4 +21,9 @@ export class TodosController {
   toggle(@Param('id', ParseIntPipe) id: number) {
     return this.todos.toggle(id);
   }
+
+  @Patch(':id/important')
+  toggleImportant(@Param('id', ParseIntPipe) id: number) {
+    return this.todos.toggleImportant(id);
+  }
 }
