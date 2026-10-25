@@ -22,7 +22,7 @@ export class TodosService {
   }
 
   async toggle(id: number) {
-    const [todo] = await this.db.query<Todo>('UPDATE todos SET done = NOT done WHERE id = $1 RETURNING *', [id]);
+    const [todo] = await this.db.query<Todo>('UPDATE todos SET done = true WHERE id = $1 RETURNING *', [id]);
     if (!todo) throw new NotFoundException(`Todo ${id} not found`);
     return todo;
   }
