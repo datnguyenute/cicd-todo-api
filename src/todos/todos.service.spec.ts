@@ -25,4 +25,21 @@ describe('TodosService', () => {
     db.query.mockResolvedValue([]);
     await expect(service.toggle(999)).rejects.toBeInstanceOf(NotFoundException);
   });
+
+  it('toggles important status using NOT important in SQL', async () => {
+    db.query.mockResolvedValue([{ id: 1, title: 'x', important: true }]);
+    await service.toggleImportant(1);
+    expect(db.query).toHaveBeenCalledWith(expect.stringContaining('SET important = NOT important'), [1]);
+  });
+
+  it('throws NotFound when toggling important status of a missing todo', async () => {
+    db.query.mockResolvedValue([]);
+    await expect(service.toggleImportant(999)).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it('lists todos ordered by important first', async () => {
+    db.query.mockResolvedValue([{ id: 1, title: 'x', important: true }, { id: 2, title: 'y', important: false }]);
+    await service.list();
+    expect(db.query).toHaveBeenCalledWith(expect.stringContaining('ORDER BY important DESC'));
+  })
 });

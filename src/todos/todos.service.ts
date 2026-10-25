@@ -5,6 +5,7 @@ export interface Todo {
   id: number;
   title: string;
   done: boolean;
+  important: boolean;
   created_at: string;
 }
 
@@ -13,7 +14,7 @@ export class TodosService {
   constructor(private readonly db: DbService) {}
 
   list() {
-    return this.db.query<Todo>('SELECT * FROM todos ORDER BY id DESC');
+    return this.db.query<Todo>('SELECT * FROM todos ORDER BY important DESC, id DESC');
   }
 
   async create(title: string) {
@@ -23,6 +24,12 @@ export class TodosService {
 
   async toggle(id: number) {
     const [todo] = await this.db.query<Todo>('UPDATE todos SET done = NOT done WHERE id = $1 RETURNING *', [id]);
+    if (!todo) throw new NotFoundException(`Todo ${id} not found`);
+    return todo;
+  }
+
+  async toggleImportant(id: number) {
+    const [todo] = await this.db.query<Todo>('UPDATE todos SET important = NOT important WHERE id = $1 RETURNING *', [id]);
     if (!todo) throw new NotFoundException(`Todo ${id} not found`);
     return todo;
   }
