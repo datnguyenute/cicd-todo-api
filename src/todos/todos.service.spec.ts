@@ -41,5 +41,5 @@ describe('TodosService', () => {
     db.query.mockResolvedValue([{ id: 1, title: 'x', important: true }, { id: 2, title: 'y', important: false }]);
     await service.list();
     expect(db.query).toHaveBeenCalledWith(expect.stringContaining('ORDER BY important DESC'));
-  })
+  });
 });

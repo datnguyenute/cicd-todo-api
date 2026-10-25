@@ -1,7 +1,7 @@
-import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
-import { TodosService } from "./todos.service";
+import { BadRequestException, Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { TodosService } from './todos.service';
 
-@Controller("todos")
+@Controller('todos')
 export class TodosController {
   constructor(private readonly todos: TodosService) {}
 
